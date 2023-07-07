@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+\title{Description of effects used}
+\author{Adailton Braga Júnior}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+
+\section{Filters}
+\subsection{1st order low-pass filter}
+
+The model used is a RC filter. The transfer function is given by
+\begin{equation}
+	\frac{Y(s)}{X(s)} = \frac{\omega_c}{s + \omega_c}
+\end{equation}
+where $X$ is the input signal in the frequency domain, $Y$ the output, $\omega_c$ the cutoff frequency in rad/s.
+
+If the system is discretized with a sampling interval of $T_s$, and using the Tustin discretization method, the z-domain transfer function is given by
+\begin{equation}
+	\frac{Y(z)}{X(z)} = K \frac{z+1} {z - a}
+\end{equation}
+where 
+\begin{align}
+	K &= \frac{\omega_c}{\omega_c + K_T} \\
+	a &= \frac{K_T - \omega_c}{K_T + \omega_c}
+\end{align}
+given that $K_T = 2 / T_s$
+
+The difference equation is then
+\begin{equation}
+	y[k] = ay[k-1] + K (x[k] + x[k-1])
+\end{equation}
+
+
+\subsection{1st order high-pass filter}
+
+The transfer function of a 1st order high-pass filter is 
+\begin{equation}
+	\frac{Y(s)}{X(s)} = \frac{s}{s + \omega_c}
+\end{equation}
+
+Using the Tustin discretization method gives
+\begin{equation}
+	\frac{Y(z)}{X(z)} = K \frac{z - 1}{z - a}
+\end{equation}
+where
+\begin{align}
+	K &= \frac{K_T}{K_T + \omega_c} \\
+	a &= \frac{K_T - \omega_c}{K_T + \omega_c}
+\end{align}
+
+The difference equation is
+\begin{equation}
+	y[k] = a y[k-1] + K (x[k] - x[k-1])
+\end{equation}
+
+
+\subsection{Band-pass filter}
+
+A band-pass filter can be implemented by cascading a low-pass and a high-filter.
+The transfer function is given by
+\begin{equation}
+	\frac{Y(s)}{X(s)} = \frac{\omega_L}{s + \omega_L} \frac{s}{s + \omega_H} = \frac{\omega_Ls}{s^2 + (\omega_L + \omega_H)s + \omega_L\omega_H }
+\end{equation}
+where $\omega_L$ and $\omega_H$ are the cut-off frequencies of the low-pass and high-pass filters, respectively.
+
+The filter center frequency is at
+\begin{equation}
+	w_c = \sqrt{\omega_L\omega_H}
+\end{equation}
+
+One must pay attention that the cut-off frequencies respect: $$\omega_H < \omega_L$$
+
+Also, the frequency bandwidth is defined as
+\begin{equation}
+	\omega_{BW} = \omega_L - \omega_H
+\end{equation}
+
+The discretization is given by
+\begin{equation}
+	\frac{Y(z)}{X(z)} = K \frac{z^2 - 1}{z^2 + az + b}
+\end{equation}
+where
+\begin{align}
+	K &= \frac{K_T\omega_L}{K_T^2 + K_T(\omega_H+\omega_L) +\omega_H\omega_L}\\
+	a &= \frac{2(\omega_H\omega_L - K_T^2)}{K_T^2 + K_T(\omega_H+\omega_L) +\omega_H\omega_L}\\
+	b &= \frac{K_T^2 - K_T(\omega_H+\omega_L) +\omega_H\omega_L}{K_T^2 + K_T(\omega_H+\omega_L) +\omega_H\omega_L}
+\end{align}
+
+In the discrete time domain, the equation is
+\begin{equation}
+	y[k] = -ay[k-1] - by[k-2] + K(x[k] - x[k-2])
+\end{equation}
+
+
+\subsection{Band-stop filter}
+
+A band-stop fiter can be designed using the sum of a low-pass and a high-pass filter. The transfer function is given as
+\begin{equation}
+	\frac{Y(s)}{X(s)} = \frac{\omega_L}{s + \omega_L} + \frac{s}{s + \omega_H} = \frac{s^2 + 2\omega_Ls + \omega_H\omega_L}{s^2 + (\omega_H + \omega_L)s + \omega_H\omega_L}
+\end{equation}
+
+The center frequency is given by
+\begin{equation}
+	\omega_c = \sqrt{\omega_H\omega_L}
+\end{equation}
+and the frequency bandwidth is
+\begin{equation}
+	\omega_{BW} = \omega_H - \omega_L
+\end{equation}
+
+
+\subsection{Second order low-pass filter}
+
+The transfer function is
+\begin{equation}
+	\frac{Y(s)}{X(s)} = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}
+\end{equation}
+where $\omega_n$ is the natural frequency and $\zeta$ is the damping factor.
+
+In the z domain the transfer function is
+\begin{equation}
+	\frac{Y(z)}{X(z)} = K \frac{z^2 + 2z + 1} {z^2 + a z + b}
+\end{equation}
+where
+\begin{align}
+	K &= \frac{\omega_n^2}{K_T^2 + 2\zeta\omega_nK_t+\omega_n^2}\\
+	a &= \frac{2(\omega_n^2 - K_T^2)} {K_T^2 + 2\zeta\omega_nK_t+\omega_n^2} \\
+	b &= \frac{K_T^2 - 2\zeta\omega_nK_t+\omega_n^2} {K_T^2 + 2\zeta\omega_nK_t+\omega_n^2} 
+\end{align}
+
+The difference equation is
+\begin{equation}
+	y[k] = -ay[k-1] - by[k-2] + K \left( x[k] + 2x[k-1] + x[k-2] \right)
+\end{equation}
+
+
+\section{Drive}
+
+\subsection{Distortion 1}
+
+It works by clipping the input signal. It differs from others because it uses a hard clipping. 
+
+Its mathematical definition is given by
+\begin{equation}
+	y[k] = h(x[k])x[k]
+\end{equation}
+where 
+\begin{equation}
+	h(x[k]) =
+	\begin{cases}
+		\frac{x_{\text{max}}}{|x[k]|}  & \text{ if } |x[k]| > x_{\text{max}} \\
+		1 & \text{ otherwise } 
+	\end{cases}
+\end{equation}
+and $x_\text{max}>0$
+
+
+\subsection{Distortion 2}
+
+The input signal is multiplied by a variable gain. This gain is 1 up to a certain value of the input
+signal, then it changes its slope.
+\begin{equation}
+    y[k] = h(x[k])x[k]
+    \label{eq:distortion2}
+\end{equation}
+
+\begin{equation}
+    h(x[k]) = 
+    \begin{cases}
+        1 & \text{if } |x[k]| < x_{\text{threshold}} \\
+        m + (1 - m)\frac{x_{\text{threshold}}}{|x|}& \text{otherwise}
+    \end{cases}
+    \label{eq:distortion2_gain}
+\end{equation}
+The value $m \in \mathbb{R}$ represents the slope of the gain.
+
+
+\section{Modulation}
+
+\subsection{Flanger}
+
+The flanger model is given by
+\begin{equation}
+	y[k] = (1-g) x[k] + gx[k - M[k]]
+\end{equation}
+The term $g$ is a gain and $M[k]$ represents a varying delay and is modulated by a low frequency oscillator (LFO).
+
+In the case it is modulated by a sine wave is
+\begin{equation}
+	M[k] = M_0 (1 + A\sin{(2\pi fkT_s)})
+\end{equation}
+where $M_0$ is the mean delay, $f$ is the "speed" ("rate") of the flanger, $A$ is the "excursion" or maximum delay swing. 
+
+If the modulator is linear it is defined by
+\begin{equation}
+	M[k] = M_0AkT_sf
+\end{equation}
+
+
+\subsection{Tremolo}
+
+The tremolo effect can be performed by multiplying the input signal by a modulating one (with an offset). It is given by
+\begin{equation}
+	y[k] = (1-g) x[k] + gm[k]x[k]
+\end{equation}
+where $m[k]$ is the modulating signal and $g$ is a gain called depth, used to select the weiths between the original and the modulated signal. The modulating signal can use a low frequency sine wave
+\begin{equation}
+	m[k] = \sin(2\pi fkT_s)
+\end{equation}
+
+
+
+
+\end{document}
+

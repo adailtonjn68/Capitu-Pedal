@@ -1,0 +1,6 @@
+Debug/*
+*.d
+Documentation/*.log
+Documentation/*.aux
+Documentation/*.pdf
+*.kdev4
