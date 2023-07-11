@@ -1,6 +1,6 @@
 # Digital implementation of guitar effects pedals
 
-![thumbnail](./Screeshots/screenshot.png)
+![thumbnail](./Screenshots/screenshot.png)
 
 ## Effects implemented
 
