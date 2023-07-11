@@ -1,37 +1,41 @@
-# Guitar effects to implement
+# Digital implementation of guitar effects pedals
 
-## Drive
+![thumbnail](./Screeshots/screeshot.png)
 
-* Overdrive
+## Effects implemented
+
+### Drive
+
 * Distortion
-* Fuzz
 
 
-## Filter/Dynamic
+### Filter/Dynamic
 
 * Filter
-* Wah
-* Compression
 
+### Modulation
 
-## Time-based
-
-* Delay
-* Reverb
-
-## Modulation
-
-* Phaser
 * Flanger
-* Chorus
 * Tremolo
-* Vibrato
 
-
-## Pitch-altering
+### Pitch-altering
 
 * Octave
 
-## Utility
+### Utility
 
+* Bitcrush
+
+
+## To be implemented
+
+* Overdrive
+* Fuzz
+* Wah
+* Compression
+* Delay
+* Reverb
+* Phaser
+* Chorus
+* Vibrato
 
